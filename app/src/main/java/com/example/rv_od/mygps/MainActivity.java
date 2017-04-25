@@ -9,25 +9,37 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
-    TextView Pantalla;
-    LocationManager Ontoy;
+    TextView Resultado;
+    LocationManager Gps;
+    float lati = 0,longi = 0,lava,lova,res1,res2,distanciat,distancia1,distancia2,diametro = 6371;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Pantalla = (TextView) findViewById(R.id.Pantalla);
-        Ontoy = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Ontoy.requestLocationUpdates(LocationManager.GPS_PROVIDER,2000,3, this);
+        Resultado = (TextView) findViewById(R.id.Pantalla);
+        Gps = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Gps.requestLocationUpdates(LocationManager.GPS_PROVIDER,2000,3, this);
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        Pantalla.setText("\n Latitud: " + location.getLatitude());
-        Pantalla.append("\n Longitud: " + location.getLongitude());
-        Pantalla.append("\n Altura: " + location.getAltitude() + " m");
-        Pantalla.append("\n Velocidad: " + location.getSpeed() + " m/s");
-        Pantalla.append("\n Exactitud: " + location.getAccuracy() + " m");
-        Pantalla.append("\n Orientacion: " + location.getBearing() + " N");
+        if (lati == 0 && longi == 0)
+        {
+            lati = location.getLatitud();
+            longi = location.getLongitude();
+            Resultado.setText("\n Latitud: " + location.getLatitude());
+            Resultado.append("\n Longitud: " + location.getLongitude());
+            res1 = Math.sqrt(Math.pow(lati-0)+Math.pow(longi-0))
+        }
+        else 
+        {
+            res2 = Math.sqrt(Math.pow(lava-lati)+Math.pow(lova-longi))
+        }
+        distancia1 =  res1 * diametro;
+        distancia2 =  res2 * diametro;
+        distanciat = (diastancia2 - distancia1) * 1000;
+        Resultado.append("\n Distancia: " + distanciat + "m")
+        
     }
 
     @Override
@@ -42,6 +54,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onProviderDisabled(String s) {
-        Pantalla.setText("Prende el GPS PLOX");
+        Pantalla.setText("Prende el GPS:");
     }
 }
